@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { ThemeContext } from '../context/ThemeContext';
-import { Filter, MapPin, Calendar, Users, Sliders, ArrowRight, X } from 'lucide-react';
+import { Filter, MapPin, Calendar, Users, ArrowRight, X } from 'lucide-react';
 import RoomCard from '../components/RoomCard';
 import rooms from '../data/rooms';
 

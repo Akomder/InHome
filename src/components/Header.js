@@ -11,7 +11,13 @@ const Header = () => {
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [language, setLanguage] = useState('vi'); // 'vi' for Vietnamese, 'en' for English
   const navigate = useNavigate();
+
+  // Toggle language
+  const toggleLanguage = () => {
+    setLanguage((prev) => (prev === 'vi' ? 'en' : 'vi'));
+  };
 
   // Xử lý sự kiện scroll để thay đổi style của header
   useEffect(() => {
@@ -70,7 +76,6 @@ const Header = () => {
                 <img src="/images/logo/logo.png" alt="StayVN Logo" className="logo-image" />
             </Link>
         </div>
-        
 
         {/* Mobile Menu Button */}
         <button className="menu-toggle" onClick={handleToggleMenu} aria-label="Toggle menu">
@@ -127,6 +132,15 @@ const Header = () => {
               <span className="notification-badge">3</span>
             </div>
           )}
+
+          {/* Language Changer */}
+          <button className="language-toggle" onClick={toggleLanguage}>
+            <img
+              src={language === 'vi' ? '/images/flags/Vietnam.png' : '/images/flags/usa.png'}
+              alt={language === 'vi' ? 'Vietnamese Flag' : 'USA Flag'}
+              className="flag-icon"
+            />
+          </button>
 
           {/* User Profile or Login */}
           {isAuthenticated ? (
@@ -462,6 +476,33 @@ const Header = () => {
           padding: 8px 16px;
         }
         
+        .language-toggle {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          border-radius: 50%;
+          width: 30px;
+          height: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .language-toggle:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .flag-icon {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
           .nav-search-container {

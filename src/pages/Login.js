@@ -13,10 +13,52 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [language, setLanguage] = useState('vi'); // State for language ('vi' for Vietnamese, 'en' for English)
 
   const { login, isAuthenticated } = useContext(AuthContext);
   const { darkMode } = useContext(ThemeContext);
   const navigate = useNavigate();
+
+  const toggleLanguage = () => {
+    setLanguage((prevLanguage) => (prevLanguage === 'vi' ? 'en' : 'vi'));
+  };
+
+  const translations = {
+    vi: {
+      welcome: 'InHome xin chào',
+      subtext: 'Đăng nhập để trải nghiệm kỳ nghỉ tuyệt vời của bạn.',
+      loginTitle: 'Đăng nhập',
+      emailLabel: 'Email',
+      passwordLabel: 'Mật khẩu',
+      rememberMe: 'Nhớ mật khẩu',
+      forgotPassword: 'Quên mật khẩu?',
+      loginButton: 'Đăng nhập',
+      processing: 'Đang xử lý...',
+      orLoginWith: 'Hoặc đăng nhập với',
+      google: 'Google',
+      facebook: 'Facebook',
+      noAccount: 'Chưa có tài khoản?',
+      registerNow: 'Đăng ký',
+    },
+    en: {
+      welcome: 'Welcome to InHome',
+      subtext: 'Log in to enjoy your wonderful vacation.',
+      loginTitle: 'Login',
+      emailLabel: 'Email',
+      passwordLabel: 'Password',
+      rememberMe: 'Remember me',
+      forgotPassword: 'Forgot password?',
+      loginButton: 'Login',
+      processing: 'Processing...',
+      orLoginWith: 'Or login with',
+      google: 'Google',
+      facebook: 'Facebook',
+      noAccount: "Don't have an account?",
+      registerNow: 'Register now',
+    },
+  };
+
+  const t = translations[language];
 
   // Tạo hiệu ứng hạt
   useEffect(() => {
@@ -112,6 +154,15 @@ const Login = () => {
 
   return (
     <div className={`login-page ${darkMode ? 'dark-mode' : ''}`}>
+      {/* Language Toggle Button with Flags */}
+      <button className="language-toggle" onClick={toggleLanguage}>
+        <img
+          src={language === 'vi' ? '/images/flags/Vietnam.png' : '/images/flags/usa.png'}
+          alt={language === 'vi' ? 'Vietnamese Flag' : 'USA Flag'}
+          className="flag-icon"
+        />
+      </button>
+
       {/* Hiệu ứng particles */}
       <div className="particles-container">
         {particles.map(particle => (
@@ -139,8 +190,8 @@ const Login = () => {
       
       <div className="login-container">
         <div className={`login-left slide-in-left ${animationComplete ? 'reveal' : ''}`}>
-          <h2 className="welcome-text">InHome xin chào</h2>
-          <p className="welcome-subtext">Đăng nhập để trải nghiệm kỳ nghỉ tuyệt vời của bạn.</p>
+          <h2 className="welcome-text">{t.welcome}</h2>
+          <p className="welcome-subtext">{t.subtext}</p>
           <div className="login-image float">
             <img src="/images//logo/login-illustration.jpg" alt="Login" onError={(e) => {
               e.target.onerror = null;
@@ -152,32 +203,32 @@ const Login = () => {
         
         <div className={`login-right pop-up ${animationComplete ? 'reveal' : ''}`}>
           <div className="login-form-container">
-            <h1 className="login-title">Đăng nhập</h1>
+            <h1 className="login-title">{t.loginTitle}</h1>
             {error && <div className="error-message">{error}</div>}
             
             <form onSubmit={handleSubmit} className="login-form">
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label htmlFor="email">{t.emailLabel}</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   className="form-control"
-                  placeholder="Nhập email của bạn"
+                  placeholder={t.emailLabel}
                   value={formData.email}
                   onChange={handleChange}
                 />
               </div>
               
               <div className="form-group">
-                <label htmlFor="password">Mật khẩu</label>
+                <label htmlFor="password">{t.passwordLabel}</label>
                 <div className="password-input-container">
                   <input
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
                     className="form-control"
-                    placeholder="Nhập mật khẩu"
+                    placeholder={t.passwordLabel}
                     value={formData.password}
                     onChange={handleChange}
                   />
@@ -194,10 +245,10 @@ const Login = () => {
               <div className="form-group remember-me">
                 <div className="remember-checkbox">
                   <input type="checkbox" id="remember" name="remember" />
-                  <label htmlFor="remember">Nhớ mật khẩu</label>
+                  <label htmlFor="remember">{t.rememberMe}</label>
                 </div>
                 
-                <a href="#forgot-password" className="forgot-password">Quên mật khẩu?</a>
+                <a href="#forgot-password" className="forgot-password">{t.forgotPassword}</a>
               </div>
               
               <button 
@@ -208,26 +259,26 @@ const Login = () => {
                 {isLoading ? (
                   <span className="loading-spinner">
                     <span className="spinner"></span>
-                    <span className="loading-text">Đang xử lý...</span>
+                    <span className="loading-text">{t.processing}</span>
                   </span>
-                ) : 'Đăng nhập'}
+                ) : t.loginButton}
               </button>
               
               <div className="login-divider">
-                <span>Hoặc đăng nhập với</span>
+                <span>{t.orLoginWith}</span>
               </div>
               
               <div className="social-login">
                 <button type="button" className="btn btn-social btn-google">
-                  <span className="social-icon">G</span> Google
+                  <span className="social-icon">G</span> {t.google}
                 </button>
                 <button type="button" className="btn btn-social btn-facebook">
-                  <span className="social-icon">f</span> Facebook
+                  <span className="social-icon">f</span> {t.facebook}
                 </button>
               </div>
               
               <div className="register-link">
-                <p>Chưa có tài khoản? <a href="#register" className="register-now-link">Đăng ký</a></p>
+                <p>{t.noAccount} <a href="#register" className="register-now-link">{t.registerNow}</a></p>
               </div>
             </form>
           </div>
@@ -738,6 +789,36 @@ const Login = () => {
           .login-form-container {
             max-width: 100%;
           }
+        }
+
+        .language-toggle {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          border-radius: 50%;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .language-toggle:hover {
+          transform: scale(1.1);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .flag-icon {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
         }
       `}</style>
     </div>
